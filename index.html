@@ -323,6 +323,39 @@
     .theme-icon {
       font-size: 16px;
     }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .action-button {
+      padding: 8px 15px;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .action-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .quick-reply {
+      display: inline-block;
+      margin: 5px;
+      padding: 8px 12px;
+      background: rgba(108, 99, 255, 0.1);
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .quick-reply:hover {
+      background: rgba(108, 99, 255, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -335,10 +368,13 @@
       </div>
       <h2>Maya - Your Personal Assistant</h2>
     </div>
-    <button class="theme-toggle" onclick="toggleTheme()">
-      <span class="theme-icon" id="themeIcon">🌙</span>
-      <span id="themeText">Dark</span>
-    </button>
+    <div class="action-buttons">
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <span class="theme-icon" id="themeIcon">🌙</span>
+        <span id="themeText">Dark</span>
+      </button>
+      <button class="action-button" onclick="clearChat()">Clear Chat</button>
+    </div>
   </div>
   
   <div class="chat-container">
@@ -373,6 +409,7 @@ let journalStep = 0;
 let newJournal = {};
 let isBotTyping = false;
 let currentTheme = 'light';
+let conversationContext = null;
 
 function toggleTheme() {
   const body = document.body;
@@ -387,6 +424,12 @@ function toggleTheme() {
     document.getElementById('themeIcon').textContent = '🌙';
     document.getElementById('themeText').textContent = 'Dark';
   }
+}
+
+function clearChat() {
+  document.getElementById('chatbox').innerHTML = '';
+  setAvatarEmoji("🗑️", "emoji-shake");
+  addMessage("Maya", "<span class='emoji'>🗑️</span> Chat history cleared. How can I help you now?", "bot");
 }
 
 function handleKeyPress(event) {
@@ -525,6 +568,12 @@ function handleUserInput(inputText) {
       return;
     }
 
+    // Check for casual conversation first
+    if (handleCasualConversation(inputText)) {
+      return;
+    }
+
+    // Then check for commands
     if (inputText.toLowerCase() === "help") {
       setAvatarEmoji("🤖", "emoji-spin");
       showHelp();
@@ -595,9 +644,106 @@ function handleUserInput(inputText) {
       showBalance();
     } else {
       setAvatarEmoji("🤔", "emoji-shake");
-      addMessage("Maya", "<span class='emoji'>🤔</span> I didn't understand that. Type 'help' to see all commands.", "bot");
+      addMessage("Maya", `<span class='emoji'>🤔</span> I didn't understand that. Type 'help' to see all commands or ask me something casual like "How are you?"`, "bot");
     }
   }, 1000);
+}
+
+function handleCasualConversation(inputText) {
+  const lowerInput = inputText.toLowerCase();
+  
+  // Greetings
+  if (/(hi|hello|hey|greetings|good morning|good afternoon|good evening)/i.test(lowerInput)) {
+    const greetings = ["👋 Hello there!", "😊 Hi! How can I help you today?", "🙋‍♀️ Hey! What's up?", "💖 Nice to see you!"];
+    setAvatarEmoji("👋", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${greetings[Math.floor(Math.random() * greetings.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // How are you
+  if (/(how are you|how's it going|how's life)/i.test(lowerInput)) {
+    const responses = ["😊 I'm doing great, thanks for asking!", "🌟 Wonderful as always! How about you?", "🤖 I'm just a bot, but I'm functioning perfectly!"];
+    setAvatarEmoji("😊", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Thanks
+  if (/(thank|thanks|appreciate)/i.test(lowerInput)) {
+    const responses = ["💖 You're welcome!", "😊 My pleasure!", "🌟 Happy to help!"];
+    setAvatarEmoji("💖", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Goodbye
+  if (/(bye|goodbye|see you|farewell)/i.test(lowerInput)) {
+    const responses = ["👋 See you later!", "😊 Take care!", "💖 Until next time!"];
+    setAvatarEmoji("👋", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Compliment
+  if (/(you're great|you're awesome|you're amazing|good job|well done)/i.test(lowerInput)) {
+    setAvatarEmoji("😊", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>😊</span> Aww, you're making me blush! I'm just here to help you.`, "bot");
+    return true;
+  }
+  
+  // What can you do
+  if (/(what can you do|what do you do|your capabilities)/i.test(lowerInput)) {
+    setAvatarEmoji("🤖", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>🤖</span> I can help you with journals, tasks, and finances! Try saying:<br>
+      <div class="quick-reply" onclick="quickReply('new journal')">new journal</div>
+      <div class="quick-reply" onclick="quickReply('show my tasks')">show my tasks</div>
+      <div class="quick-reply" onclick="quickReply('show balance')">show balance</div>
+      <br>Or type "help" for more options!`, "bot");
+    return true;
+  }
+  
+  // Who are you
+  if (/(who are you|what's your name)/i.test(lowerInput)) {
+    setAvatarEmoji("👩‍💻", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>👩‍💻</span> I'm Maya, your personal assistant! I'm here to help you manage your journals, tasks, and finances.`, "bot");
+    return true;
+  }
+  
+  // Time/Date
+  if (/(what time is it|what's the time|what day is it|what's the date)/i.test(lowerInput)) {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+    setAvatarEmoji("⏰", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>⏰</span> It's currently ${now.toLocaleTimeString('en-US', options)}`, "bot");
+    return true;
+  }
+  
+  // Weather
+  if (/(weather|how's the weather)/i.test(lowerInput)) {
+    setAvatarEmoji("☀️", "emoji-shake");
+    addMessage("Maya", `<span class='emoji'>☀️</span> I don't have real-time weather data, but I hope it's nice where you are!`, "bot");
+    return true;
+  }
+  
+  // Joke
+  if (/(tell me a joke|make me laugh)/i.test(lowerInput)) {
+    const jokes = [
+      "Why don't scientists trust atoms? Because they make up everything!",
+      "Why did the scarecrow win an award? Because he was outstanding in his field!",
+      "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+      "What do you call a fake noodle? An impasta!"
+    ];
+    setAvatarEmoji("😂", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>😂</span> ${jokes[Math.floor(Math.random() * jokes.length)]}`, "bot");
+    return true;
+  }
+  
+  return false;
+}
+
+function quickReply(text) {
+  document.getElementById("textInput").value = text;
+  sendMessage();
 }
 
 function handleJournalCreation(inputText) {
@@ -847,6 +993,15 @@ function showHelp() {
   - show income<br>
   - show expenses<br>
   - show balance<br>
+  
+  <b>Casual Chat:</b><br>
+  - Hi / Hello / Hey<br>
+  - How are you?<br>
+  - Tell me a joke<br>
+  - What time is it?<br>
+  - What can you do?<br>
+  - Thank you<br>
+  - Goodbye<br>
   `, "bot");
 }
 
@@ -906,7 +1061,12 @@ function showBalance() {
 // Initial greeting
 setTimeout(() => {
   setAvatarEmoji("👋", "emoji-bounce");
-  addMessage("Maya", "<span class='emoji'>👋</span> Hi there! I'm Maya, your personal assistant. How can I help you today? Type 'help' to see what I can do.", "bot");
+  addMessage("Maya", `<span class='emoji'>👋</span> Hi there! I'm Maya, your personal assistant. How can I help you today?<br>
+    Try saying:<br>
+    <div class="quick-reply" onclick="quickReply('help')">help</div>
+    <div class="quick-reply" onclick="quickReply('How are you?')">How are you?</div>
+    <div class="quick-reply" onclick="quickReply('What can you do?')">What can you do?</div>
+  `, "bot");
 }, 500);
 </script>
 
