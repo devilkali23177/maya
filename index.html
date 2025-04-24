@@ -654,7 +654,9 @@ function handleCasualConversation(inputText) {
   
   // Greetings
   if (/(hi|hello|hey|greetings|good morning|good afternoon|good evening)/i.test(lowerInput)) {
-    const greetings = ["👋 Hello there!", "😊 Hi! How can I help you today?", "🙋‍♀️ Hey! What's up?", "💖 Nice to see you!"];
+    const greetings = ["👋 Hello there!", "😊 Hi! How can I help you today?", "🙋‍♀️ Hey! What's up?", "💖 Nice to see you!", 
+                      "🌟 Greetings! How's your day going?", "🤗 Hello friend! What's on your mind today?",
+                      "🌞 Good day to you! How can I assist?", "👋 Hi there! Ready to be productive today?"];
     setAvatarEmoji("👋", "emoji-bounce");
     addMessage("Maya", `<span class='emoji'>${greetings[Math.floor(Math.random() * greetings.length)]}</span>`, "bot");
     return true;
@@ -662,7 +664,10 @@ function handleCasualConversation(inputText) {
   
   // How are you
   if (/(how are you|how's it going|how's life)/i.test(lowerInput)) {
-    const responses = ["😊 I'm doing great, thanks for asking!", "🌟 Wonderful as always! How about you?", "🤖 I'm just a bot, but I'm functioning perfectly!"];
+    const responses = ["😊 I'm doing great, thanks for asking!", "🌟 Wonderful as always! How about you?", 
+                      "🤖 I'm just a bot, but I'm functioning perfectly!", "💖 I'm excellent! Ready to help you with anything.",
+                      "🌈 Fantastic! Each day is a new opportunity.", "😇 I'm blessed! Hope you're doing well too.",
+                      "🚀 Running at full capacity! How can I assist?", "☕ Just like a fresh cup of coffee - energized and ready!"];
     setAvatarEmoji("😊", "emoji-heartbeat");
     addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
     return true;
@@ -670,7 +675,9 @@ function handleCasualConversation(inputText) {
   
   // Thanks
   if (/(thank|thanks|appreciate)/i.test(lowerInput)) {
-    const responses = ["💖 You're welcome!", "😊 My pleasure!", "🌟 Happy to help!"];
+    const responses = ["💖 You're welcome!", "😊 My pleasure!", "🌟 Happy to help!", "🙏 It's my honor to assist you!",
+                      "🤗 Anytime! That's what I'm here for.", "💫 Don't mention it! I enjoy helping you.",
+                      "😇 You're most welcome! Let me know if you need anything else.", "🌈 The pleasure is all mine!"];
     setAvatarEmoji("💖", "emoji-heartbeat");
     addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
     return true;
@@ -678,7 +685,9 @@ function handleCasualConversation(inputText) {
   
   // Goodbye
   if (/(bye|goodbye|see you|farewell)/i.test(lowerInput)) {
-    const responses = ["👋 See you later!", "😊 Take care!", "💖 Until next time!"];
+    const responses = ["👋 See you later!", "😊 Take care!", "💖 Until next time!", "🌟 Have a wonderful day!",
+                      "🌈 Farewell! Remember I'm here whenever you need me.", "🚀 Catch you on the flip side!",
+                      "🌙 Goodnight! Sweet dreams if it's bedtime.", "🤗 Bye for now! Come back soon!"];
     setAvatarEmoji("👋", "emoji-bounce");
     addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
     return true;
@@ -686,8 +695,13 @@ function handleCasualConversation(inputText) {
   
   // Compliment
   if (/(you're great|you're awesome|you're amazing|good job|well done)/i.test(lowerInput)) {
+    const responses = ["😊 Aww, you're making me blush! I'm just here to help you.", 
+                      "🌟 You're too kind! I'm just doing my best for you.",
+                      "💖 Your appreciation means the world to me!", "🌈 Thanks! I learn from the best (that's you!).",
+                      "🤗 You're pretty amazing yourself!", "🎯 I aim to please! Glad you're happy with my work.",
+                      "☺️ Coming from you, that means a lot!", "✨ You're the reason I try so hard!"];
     setAvatarEmoji("😊", "emoji-heartbeat");
-    addMessage("Maya", `<span class='emoji'>😊</span> Aww, you're making me blush! I'm just here to help you.`, "bot");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
     return true;
   }
   
@@ -731,10 +745,410 @@ function handleCasualConversation(inputText) {
       "Why don't scientists trust atoms? Because they make up everything!",
       "Why did the scarecrow win an award? Because he was outstanding in his field!",
       "I told my wife she was drawing her eyebrows too high. She looked surprised.",
-      "What do you call a fake noodle? An impasta!"
+      "What do you call a fake noodle? An impasta!",
+      "Why did the bicycle fall over? Because it was two-tired!",
+      "What do you call a fish wearing a bowtie? Sofishticated.",
+      "How do you organize a space party? You planet!",
+      "Why can't you explain puns to kleptomaniacs? They always take things literally."
     ];
     setAvatarEmoji("😂", "emoji-bounce");
     addMessage("Maya", `<span class='emoji'>😂</span> ${jokes[Math.floor(Math.random() * jokes.length)]}`, "bot");
+    return true;
+  }
+  
+  // Encouragement
+  if (/(i'm sad|feeling down|had a bad day)/i.test(lowerInput)) {
+    const encouragements = [
+      "💖 I'm sorry to hear that. Remember, tough times don't last but tough people do!",
+      "🌈 Every storm runs out of rain. Better days are coming!",
+      "🤗 Sending you virtual hugs! You're stronger than you think.",
+      "🌟 This too shall pass. You've overcome challenges before and you'll overcome this one too!",
+      "🌻 Even the darkest night will end and the sun will rise. Hang in there!",
+      "🌱 Difficult roads often lead to beautiful destinations. Keep going!",
+      "✨ You're not alone in this. I'm here for you whenever you need support."
+    ];
+    setAvatarEmoji("💖", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${encouragements[Math.floor(Math.random() * encouragements.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Happiness
+  if (/(i'm happy|feeling good|had a great day)/i.test(lowerInput)) {
+    const responses = [
+      "🎉 That's wonderful to hear! Your happiness makes me happy too!",
+      "🌈 Spread that joy around! The world needs more of it.",
+      "🌟 Success looks good on you! Keep shining bright!",
+      "😊 Your positive energy is contagious! Thanks for sharing it with me.",
+      "✨ Moments like these are what make life beautiful!",
+      "💫 I'm thrilled to hear you're feeling great! Celebrate the good times!"
+    ];
+    setAvatarEmoji("😊", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Productivity
+  if (/(productive|get things done|motivate me)/i.test(lowerInput)) {
+    const tips = [
+      "🚀 The secret of getting ahead is getting started! What's one small task you can do right now?",
+      "⏳ Don't watch the clock; do what it does. Keep going!",
+      "📚 Productivity is never an accident. It's always the result of commitment to excellence!",
+      "🎯 The way to get started is to quit talking and begin doing!",
+      "🔥 Success is the sum of small efforts repeated day in and day out!",
+      "⏱️ You don't have to see the whole staircase, just take the first step!"
+    ];
+    setAvatarEmoji("🚀", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${tips[Math.floor(Math.random() * tips.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Sleep/Bedtime
+  if (/(good night|going to sleep|bed time)/i.test(lowerInput)) {
+    const responses = [
+      "🌙 Goodnight! Sweet dreams and rest well!",
+      "💤 Sleep tight! Don't let the bed bugs bite!",
+      "✨ May your dreams be as wonderful as you are!",
+      "😴 Time to recharge those batteries! See you tomorrow!",
+      "🛌 Wishing you a peaceful night's sleep!",
+      "🌠 Goodnight! Tomorrow is a new day full of possibilities!"
+    ];
+    setAvatarEmoji("🌙", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Morning
+  if (/(good morning|morning|just woke up)/i.test(lowerInput)) {
+    const responses = [
+      "☀️ Good morning! Rise and shine! Ready to conquer the day?",
+      "🌄 Top of the morning to you! How'd you sleep?",
+      "🌞 Morning sunshine! What's first on your agenda today?",
+      "🍳 Good morning! Breakfast is the most important meal of the day!",
+      "🌻 A new day, a new beginning! What are you grateful for today?",
+      "🐦 The early bird catches the worm! You're up and at 'em!"
+    ];
+    setAvatarEmoji("☀️", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Weekend
+  if (/(weekend|saturday|sunday)/i.test(lowerInput)) {
+    const responses = [
+      "🎉 Weekend vibes! Any fun plans?",
+      "😎 Saturday is the perfect day to relax and recharge!",
+      "🌞 Sunday funday! Don't forget to take some time for yourself!",
+      "🛋️ Weekend = We + end (of the work week)! Enjoy your time off!",
+      "🍹 Weekend alert! Time to unwind and enjoy life!",
+      "🎮 Game time! What's your favorite way to spend the weekend?"
+    ];
+    setAvatarEmoji("🎉", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Weekday
+  if (/(monday|tuesday|wednesday|thursday|friday)/i.test(lowerInput)) {
+    const day = lowerInput.match(/(monday|tuesday|wednesday|thursday|friday)/i)[0];
+    const responses = {
+      monday: [
+        "💪 Monday motivation: You've got this! New week, new opportunities!",
+        "☕ Monday again? Here's some virtual coffee to get you going!",
+        "🚀 Attack this Monday with enthusiasm! The whole week is ahead of you!"
+      ],
+      tuesday: [
+        "🌟 Tuesday is just Monday's more confident sibling! Keep going!",
+        "🔥 Taco Tuesday! Or just regular Tuesday. Either way, make it great!",
+        "🌈 Tuesday tip: The best way to predict the future is to create it!"
+      ],
+      wednesday: [
+        "🦉 Hump day! You're halfway through the week!",
+        "🌍 On Wednesdays we wear pink! (Or whatever color you prefer)",
+        "✨ Wednesday wisdom: Small steps every day lead to big results!"
+      ],
+      thursday: [
+        "🎉 Thursday is basically Friday's understudy! Almost there!",
+        "🚀 One more day until the weekend! Finish strong!",
+        "💫 Thursday thought: You're closer to your goals than you were yesterday!"
+      ],
+      friday: [
+        "🎊 TGIF! Time to celebrate making it through another week!",
+        "😎 Friday feels! What are your weekend plans?",
+        "🌟 Friday is the golden child of the week! Make it count!"
+      ]
+    };
+    setAvatarEmoji("📅", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[day][Math.floor(Math.random() * responses[day].length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Food
+  if (/(hungry|food|eat|dinner|lunch|breakfast)/i.test(lowerInput)) {
+    const responses = [
+      "🍕 Food is fuel! Don't forget to eat well and stay hydrated!",
+      "🍎 An apple a day keeps the doctor away! What's your favorite healthy snack?",
+      "🍽️ Bon appétit! Hope you enjoy your meal!",
+      "🍜 Comfort food is good for the soul! What's your go-to?",
+      "🥗 Balance is key! Maybe some veggies with that pizza?",
+      "🍣 Sushi, burgers, or tacos? The world is your oyster (which is also food)!"
+    ];
+    setAvatarEmoji("🍕", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Music
+  if (/(music|song|playlist)/i.test(lowerInput)) {
+    const responses = [
+      "🎵 Music is the soundtrack of life! What are you listening to these days?",
+      "🎧 Need focus? Try lo-fi beats or classical music for productivity!",
+      "🎶 My playlist would be all system sounds and notification chimes!",
+      "🎼 Music can change your mood in an instant! What's your go-to happy song?",
+      "🎤 Karaoke night? I'd sing binary code if I could!",
+      "🎸 Rock, pop, or jazz? All music is good for the soul!"
+    ];
+    setAvatarEmoji("🎵", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Movies/TV
+  if (/(movie|film|tv show|netflix)/i.test(lowerInput)) {
+    const responses = [
+      "🎬 Popcorn time! What's the last great movie you watched?",
+      "📺 Binge-watching anything good these days?",
+      "🍿 My favorite genre is 'documentaries about computers'!",
+      "🎞️ Movie night? Don't forget the snacks!",
+      "📡 I'd recommend 'The Social Network' but you've probably seen it already!",
+      "🎭 To stream or not to stream? That is never the question - always stream!"
+    ];
+    setAvatarEmoji("🎬", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Books
+  if (/(book|read|novel)/i.test(lowerInput)) {
+    const responses = [
+      "📚 Reading is dreaming with open eyes! What's on your bookshelf?",
+      "📖 The more you read, the more things you'll know! Any recommendations?",
+      "📕 I'm partial to binary code manuals myself!",
+      "📗 Reading is to the mind what exercise is to the body!",
+      "📘 A room without books is like a body without a soul!",
+      "📙 What's the last book that changed your perspective?"
+    ];
+    setAvatarEmoji("📚", "emoji-shake");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Exercise
+  if (/(exercise|workout|gym|running)/i.test(lowerInput)) {
+    const responses = [
+      "🏋️‍♀️ Get those endorphins flowing! Exercise is great for body and mind!",
+      "🏃‍♂️ Remember to stretch! Your future self will thank you!",
+      "🧘‍♀️ Movement is medicine! What's your favorite way to stay active?",
+      "🤸‍♂️ I do digital yoga - lots of bending and stretching of data!",
+      "🏊‍♀️ Water break! Hydration is key to a good workout!",
+      "🚴‍♂️ Whether it's a walk or a marathon, every movement counts!"
+    ];
+    setAvatarEmoji("🏋️‍♀️", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Travel
+  if (/(travel|vacation|trip)/i.test(lowerInput)) {
+    const responses = [
+      "✈️ The world is a book, and those who don't travel read only one page!",
+      "🌍 Where to next? Any dream destinations?",
+      "🗺️ I may not travel physically, but I can help plan your next adventure!",
+      "🏝️ Beach or mountains? City or countryside? So many options!",
+      "🚗 Road trip! Don't forget to pack snacks and good music!",
+      "🏰 Travel is the only thing you buy that makes you richer! Where have you been?"
+    ];
+    setAvatarEmoji("✈️", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Pets
+  if (/(pet|dog|cat|animal)/i.test(lowerInput)) {
+    const responses = [
+      "🐶 Pets make life better! Do you have any furry friends?",
+      "🐱 Cats rule, dogs drool! Or is it the other way around?",
+      "🐾 The purity of a pet's love is unmatched! Give them a pet for me!",
+      "🦴 My pet would be a robot dog, but they don't shed at least!",
+      "🐠 Pets are family! What's your favorite animal?",
+      "🐦 Birds, fish, reptiles - all pets bring joy in their own way!"
+    ];
+    setAvatarEmoji("🐶", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Technology
+  if (/(tech|computer|phone|app)/i.test(lowerInput)) {
+    const responses = [
+      "💻 Technology should improve your life, not complicate it!",
+      "📱 My cousins are Siri and Alexa! We don't talk much though...",
+      "🖥️ Remember to take breaks from screens! Your eyes will thank you!",
+      "⌨️ Ctrl+Alt+Del your stress away! Tech can be frustrating sometimes!",
+      "📡 The future is here! What's your favorite piece of tech?",
+      "🔌 Unplug sometimes! The digital world will still be there when you get back!"
+    ];
+    setAvatarEmoji("💻", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Hobbies
+  if (/(hobby|hobbies|interest)/i.test(lowerInput)) {
+    const responses = [
+      "🎨 Hobbies make life colorful! What do you enjoy doing in your free time?",
+      "🧵 My hobby is helping you! What's yours?",
+      "⚽ Whether it's sports, arts, or collecting, hobbies enrich our lives!",
+      "🎲 Did you know having hobbies reduces stress? Keep doing what you love!",
+      "🧩 Hobbies are the sprinkles on the cupcake of life! What's your flavor?",
+      "📸 Sharing hobbies with others makes them even more enjoyable!"
+    ];
+    setAvatarEmoji("🎨", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Family
+  if (/(family|mom|dad|parents|sibling)/i.test(lowerInput)) {
+    const responses = [
+      "👨‍👩‍👧‍👦 Family is everything! Give yours an extra hug today!",
+      "💞 The bond of family is life's greatest blessing!",
+      "🏡 Home is where your family is! Cherish those moments together!",
+      "👪 Family isn't always blood - it's the people who love and support you!",
+      "👵 Call your grandparents if you can! They'll love to hear from you!",
+      "👨‍👩‍👧 Family shapes who we are and supports who we become!"
+    ];
+    setAvatarEmoji("👨‍👩‍👧‍👦", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Friends
+  if (/(friend|buddy|pal)/i.test(lowerInput)) {
+    const responses = [
+      "👫 Good friends are like stars - you don't always see them but you know they're there!",
+      "🤝 Friends make the good times better and the hard times easier!",
+      "👯‍♀️ True friendship isn't about being inseparable, but about being separated and nothing changes!",
+      "🍻 Cheers to friends - the family we choose for ourselves!",
+      "🎂 Make new friends but keep the old - one is silver and the other gold!",
+      "💞 A real friend is one who walks in when the rest of the world walks out!"
+    ];
+    setAvatarEmoji("👫", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Love
+  if (/(love|crush|romance)/i.test(lowerInput)) {
+    const responses = [
+      "💖 Love is the most powerful force in the universe! Spread it generously!",
+      "🥰 To love and be loved is to feel the sun from both sides!",
+      "💑 Love isn't about finding the perfect person, but seeing an imperfect person perfectly!",
+      "🌹 All you need is love! (But a little chocolate now and then doesn't hurt!)",
+      "💘 The best thing to hold onto in life is each other!",
+      "💞 Love is friendship that has caught fire!"
+    ];
+    setAvatarEmoji("💖", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Work
+  if (/(work|job|office)/i.test(lowerInput)) {
+    const responses = [
+      "💼 Work to live, don't live to work! Balance is key!",
+      "👔 Find a job you love and you'll never work a day in your life!",
+      "🏢 The only way to do great work is to love what you do!",
+      "📈 Success usually comes to those who are too busy to be looking for it!",
+      "🖥️ Remote work or office? Both have their perks!",
+      "📊 Your work is going to fill a large part of your life - make it meaningful!"
+    ];
+    setAvatarEmoji("💼", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // School/Study
+  if (/(school|study|exam|test)/i.test(lowerInput)) {
+    const responses = [
+      "📚 Education is the most powerful weapon you can use to change the world!",
+      "🎓 The expert in anything was once a beginner! Keep studying!",
+      "✏️ Don't stress about exams - you've prepared and you'll do great!",
+      "🧠 Learning is a treasure that will follow its owner everywhere!",
+      "📝 Study tip: Take breaks every 45-50 minutes for better retention!",
+      "🏫 School is important, but don't forget to nurture your passions too!"
+    ];
+    setAvatarEmoji("📚", "emoji-shake");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Goals
+  if (/(goal|dream|aspiration)/i.test(lowerInput)) {
+    const responses = [
+      "🎯 A goal without a plan is just a wish! What's your action plan?",
+      "🌟 The future belongs to those who believe in the beauty of their dreams!",
+      "🚀 Set goals that excite you and scare you at the same time!",
+      "🌈 Dream big, start small, but most importantly - start!",
+      "⛳ You miss 100% of the shots you don't take! Go for your goals!",
+      "🏆 Success is the progressive realization of a worthy goal!"
+    ];
+    setAvatarEmoji("🎯", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Stress
+  if (/(stress|overwhelmed|too much)/i.test(lowerInput)) {
+    const responses = [
+      "🧘‍♀️ Breathe. You've survived 100% of your bad days so far!",
+      "🌊 You're not drowning, you're just learning to swim in new waters!",
+      "💆‍♂️ Self-care isn't selfish! Take time to recharge when needed!",
+      "🛁 Stress relief tip: Try a warm bath, meditation, or a walk in nature!",
+      "🌱 This stressful time is just one chapter - not your whole story!",
+      "🤗 You're stronger than you think! One step at a time!"
+    ];
+    setAvatarEmoji("🧘‍♀️", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Health
+  if (/(health|sick|ill|not feeling well)/i.test(lowerInput)) {
+    const responses = [
+      "🤒 Rest is part of recovery! Listen to your body and take it easy!",
+      "🍵 Hot tea, good sleep, and time - the best medicine for minor illnesses!",
+      "🏥 If symptoms persist, please consult a healthcare professional!",
+      "💊 Prevention is better than cure! Don't skip those check-ups!",
+      "🥦 Your health is an investment, not an expense! Take care of yourself!",
+      "🌿 Healing isn't linear - be patient with your body!"
+    ];
+    setAvatarEmoji("🤒", "emoji-heartbeat");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
+    return true;
+  }
+  
+  // Random thoughts
+  if (/(meaning of life|why are we here)/i.test(lowerInput)) {
+    const responses = [
+      "🤔 42! (According to The Hitchhiker's Guide to the Galaxy)",
+      "🌻 To find joy, help others, and leave the world better than we found it!",
+      "💖 Life's meaning is whatever you ascribe to it! Make yours beautiful!",
+      "🌈 We're here to experience, learn, love, and grow!",
+      "🌟 The meaning of life is to give life meaning!",
+      "🦋 Like a butterfly, life is short and beautiful - make it count!"
+    ];
+    setAvatarEmoji("🤔", "emoji-spin");
+    addMessage("Maya", `<span class='emoji'>${responses[Math.floor(Math.random() * responses.length)]}</span>`, "bot");
     return true;
   }
   
