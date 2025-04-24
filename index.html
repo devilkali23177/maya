@@ -356,6 +356,56 @@
     .quick-reply:hover {
       background: rgba(108, 99, 255, 0.2);
     }
+    
+    /* Import section styles */
+    .import-section {
+      padding: 15px;
+      background: rgba(79, 209, 197, 0.1);
+      border-radius: 10px;
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .import-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    .file-label {
+      padding: 8px 15px;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+    
+    .file-label:hover {
+      background: #5a52e0;
+    }
+    
+    .reset-button {
+      padding: 8px 15px;
+      background: #e53e3e;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      border: none;
+      transition: all 0.3s;
+    }
+    
+    .reset-button:hover {
+      background: #c53030;
+    }
   </style>
 </head>
 <body>
@@ -385,9 +435,35 @@
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
+  
+  <div class="import-section">
+    <h3 style="margin: 0; color: var(--primary-color);">Bot Extensions</h3>
+    <div class="import-controls">
+      <label for="botExtension" class="file-label">Import Bot Extension</label>
+      <input type="file" id="botExtension" class="file-input" accept=".html" onchange="importBotExtension(event)">
+      <button class="reset-button" onclick="resetBot()">Reset Bot</button>
+    </div>
+    <p style="margin: 0; font-size: 12px; color: var(--text-color); opacity: 0.7;">
+      Import an HTML file to extend Maya's functionality
+    </p>
+  </div>
 </div>
 
 <script>
+// Store the original bot state for reset functionality
+const originalBotState = {
+  handleUserInput: null,
+  handleCasualConversation: null,
+  showHelp: null,
+  // Add other functions that might be extended
+};
+
+// Save original functions before they might be modified
+originalBotState.handleUserInput = handleUserInput;
+originalBotState.handleCasualConversation = handleCasualConversation;
+originalBotState.showHelp = showHelp;
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyD8Jn_pOd3ikyczCUGTu0rHB4MXZHNxCKU",
   authDomain: "income-2dee6.firebaseapp.com",
@@ -404,6 +480,7 @@ const database = firebase.database();
 const journalRef = database.ref('users/QgMajE6ZhEbsy2booWciH3ryc6E2/journalEntries');
 const taskRef = database.ref('users/QgMajE6ZhEbsy2booWciH3ryc6E2/tasks');
 const financeRef = database.ref('users/QgMajE6ZhEbsy2booWciH3ryc6E2/financeEntries');
+const extensionsRef = database.ref('users/QgMajE6ZhEbsy2booWciH3ryc6E2/botExtensions');
 
 let journalStep = 0;
 let newJournal = {};
@@ -1472,16 +1549,117 @@ function showBalance() {
   });
 }
 
-// Initial greeting
-setTimeout(() => {
-  setAvatarEmoji("👋", "emoji-bounce");
-  addMessage("Maya", `<span class='emoji'>👋</span> Hi there! I'm Maya, your personal assistant. How can I help you today?<br>
-    Try saying:<br>
-    <div class="quick-reply" onclick="quickReply('help')">help</div>
-    <div class="quick-reply" onclick="quickReply('How are you?')">How are you?</div>
-    <div class="quick-reply" onclick="quickReply('What can you do?')">What can you do?</div>
-  `, "bot");
-}, 500);
+// Import bot extension functionality
+function importBotExtension(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const content = e.target.result;
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(content, "text/html");
+      
+      // Extract script content
+      const scripts = doc.querySelectorAll('script');
+      scripts.forEach(script => {
+        if (script.textContent.trim()) {
+          try {
+            // Save the extension to Firebase
+            extensionsRef.push({
+              name: file.name,
+              content: script.textContent,
+              timestamp: Date.now()
+            }, function(error) {
+              if (error) {
+                setAvatarEmoji("❌", "emoji-shake");
+                addMessage("Maya", `<span class='emoji'>❌</span> Error saving extension to database.`, "bot");
+              } else {
+                // Execute the script content
+                new Function(script.textContent)();
+                setAvatarEmoji("✅", "emoji-heartbeat");
+                addMessage("Maya", "<span class='emoji'>✅</span> Bot extension imported and saved successfully!", "bot");
+                createConfetti();
+              }
+            });
+          } catch (error) {
+            console.error("Error executing imported script:", error);
+            setAvatarEmoji("❌", "emoji-shake");
+            addMessage("Maya", `<span class='emoji'>❌</span> Error importing extension: ${error.message}`, "bot");
+          }
+        }
+      });
+      
+      // Reset file input
+      event.target.value = '';
+    } catch (error) {
+      console.error("Error importing bot extension:", error);
+      setAvatarEmoji("❌", "emoji-shake");
+      addMessage("Maya", `<span class='emoji'>❌</span> Error importing extension: ${error.message}`, "bot");
+    }
+  };
+  reader.readAsText(file);
+}
+
+// Load saved extensions when the page loads
+function loadExtensions() {
+  extensionsRef.once('value', snapshot => {
+    const data = snapshot.val();
+    if (data) {
+      Object.values(data).forEach(extension => {
+        try {
+          new Function(extension.content)();
+          console.log(`Loaded extension: ${extension.name}`);
+        } catch (error) {
+          console.error(`Error loading extension ${extension.name}:`, error);
+        }
+      });
+    }
+  });
+}
+
+// Reset bot to original state
+function resetBot() {
+  // Restore original functions
+  if (originalBotState.handleUserInput) {
+    handleUserInput = originalBotState.handleUserInput;
+  }
+  if (originalBotState.handleCasualConversation) {
+    handleCasualConversation = originalBotState.handleCasualConversation;
+  }
+  if (originalBotState.showHelp) {
+    showHelp = originalBotState.showHelp;
+  }
+  
+  // Clear all extensions from Firebase
+  extensionsRef.remove(function(error) {
+    if (error) {
+      setAvatarEmoji("❌", "emoji-shake");
+      addMessage("Maya", "<span class='emoji'>❌</span> Error resetting extensions.", "bot");
+    } else {
+      // Clear chat and show confirmation
+      clearChat();
+      setAvatarEmoji("🔄", "emoji-spin");
+      addMessage("Maya", "<span class='emoji'>🔄</span> Bot has been reset to its original state and all extensions removed.", "bot");
+    }
+  });
+}
+
+// Initial greeting and load extensions
+window.onload = function() {
+  loadExtensions();
+  
+  setTimeout(() => {
+    setAvatarEmoji("👋", "emoji-bounce");
+    addMessage("Maya", `<span class='emoji'>👋</span> Hi there! I'm Maya, your personal assistant. How can I help you today?<br>
+      Try saying:<br>
+      <div class="quick-reply" onclick="quickReply('help')">help</div>
+      <div class="quick-reply" onclick="quickReply('How are you?')">How are you?</div>
+      <div class="quick-reply" onclick="quickReply('What can you do?')">What can you do?</div>
+    `, "bot");
+  }, 500);
+};
 </script>
 
 </body>
