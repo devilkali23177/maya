@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Journal, Task & Finance Manager Chatbot</title>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -37,7 +38,7 @@
     body { 
       font-family: 'Poppins', sans-serif; 
       background: var(--bg-color); 
-      padding: 20px;
+      padding: 10px;
       margin: 0;
       min-height: 100vh;
       color: var(--text-color);
@@ -48,8 +49,8 @@
       max-width: 900px;
       margin: 0 auto;
       background: var(--bg-color);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       overflow: hidden;
       padding: 0;
       transition: background 0.3s;
@@ -58,73 +59,77 @@
     .header {
       background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
       color: white;
-      padding: 20px;
+      padding: 15px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
     }
     
     .header-content {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 10px;
     }
     
     .header h2 {
       margin: 0;
       font-weight: 600;
+      font-size: 1.2rem;
     }
     
     .avatar {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       position: relative;
       overflow: hidden;
+      flex-shrink: 0;
     }
     
     .emoji-avatar {
-      font-size: 2.5em;
+      font-size: 2em;
       line-height: 1;
     }
     
     .chat-container {
       display: flex;
       flex-direction: column;
-      height: 70vh;
+      height: calc(100vh - 250px);
+      min-height: 300px;
     }
     
     #chatbox { 
       flex: 1;
-      padding: 20px;
+      padding: 15px;
       overflow-y: auto;
       background: url('https://transparenttextures.com/patterns/light-paper-fibers.png');
       background-color: var(--chat-bg-color);
     }
     
     #userInput { 
-      padding: 15px 20px;
+      padding: 10px 15px;
       background: var(--bg-color);
       border-top: 1px solid var(--border-color);
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
     
     #textInput { 
       flex: 1;
-      padding: 12px 15px;
+      padding: 10px 12px;
       border: 2px solid var(--border-color);
-      border-radius: 30px;
+      border-radius: 25px;
       font-family: 'Poppins', sans-serif;
       font-size: 14px;
       transition: all 0.3s;
       background: var(--input-bg);
       color: var(--text-color);
+      min-width: 0;
     }
     
     #textInput:focus {
@@ -134,28 +139,30 @@
     }
     
     button { 
-      padding: 12px 25px;
+      padding: 10px 15px;
       background: var(--primary-color);
       color: white;
       border: none;
-      border-radius: 30px;
+      border-radius: 25px;
       font-family: 'Poppins', sans-serif;
       font-weight: 500;
+      font-size: 14px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      white-space: nowrap;
     }
     
     button:hover {
       background: #5a52e0;
       transform: translateY(-2px);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
     }
     
     .message { 
-      margin: 15px 0;
+      margin: 12px 0;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       animation: fadeIn 0.3s ease-out;
     }
     
@@ -174,19 +181,20 @@
     }
     
     .message-content {
-      max-width: 70%;
-      padding: 12px 16px;
-      border-radius: 18px;
-      line-height: 1.5;
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 15px;
+      line-height: 1.4;
       position: relative;
       word-wrap: break-word;
+      font-size: 14px;
     }
     
     .bot .message-content {
       background: var(--bg-color);
       color: var(--text-color);
       border-top-left-radius: 5px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
     
     .user .message-content {
@@ -196,8 +204,8 @@
     }
     
     .bot-avatar {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       background: var(--secondary-color);
       display: flex;
@@ -206,20 +214,21 @@
       flex-shrink: 0;
       color: white;
       font-weight: bold;
+      font-size: 14px;
     }
     
     .typing-indicator {
       display: inline-flex;
-      gap: 5px;
-      padding: 10px 15px;
+      gap: 4px;
+      padding: 8px 12px;
       background: var(--bg-color);
-      border-radius: 18px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border-radius: 15px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     }
     
     .typing-dot {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       background: var(--secondary-color);
       border-radius: 50%;
       animation: typingAnimation 1.4s infinite ease-in-out;
@@ -231,11 +240,11 @@
     
     @keyframes typingAnimation {
       0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-5px); }
+      30% { transform: translateY(-3px); }
     }
     
     .emoji {
-      font-size: 1.2em;
+      font-size: 1.1em;
       vertical-align: middle;
     }
     
@@ -259,7 +268,7 @@
     
     @keyframes bounce {
       from { transform: translateY(0) scale(1); }
-      to { transform: translateY(-5px) scale(1.1); }
+      to { transform: translateY(-3px) scale(1.1); }
     }
     
     .emoji-spin {
@@ -295,8 +304,8 @@
     
     .confetti {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       background-color: var(--accent-color);
       opacity: 0;
     }
@@ -304,15 +313,15 @@
     .theme-toggle {
       background: rgba(255, 255, 255, 0.2);
       border: none;
-      border-radius: 20px;
-      padding: 5px 10px;
+      border-radius: 15px;
+      padding: 5px 8px;
       color: white;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       font-family: 'Poppins', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       transition: all 0.3s;
     }
     
@@ -321,22 +330,24 @@
     }
     
     .theme-icon {
-      font-size: 16px;
+      font-size: 14px;
     }
     
     .action-buttons {
       display: flex;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
+      margin-top: 5px;
+      align-self: flex-end;
     }
     
     .action-button {
-      padding: 8px 15px;
-      font-size: 12px;
+      padding: 6px 12px;
+      font-size: 11px;
       background: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
+      border-radius: 15px;
       cursor: pointer;
       transition: all 0.3s;
+      white-space: nowrap;
     }
     
     .action-button:hover {
@@ -345,12 +356,13 @@
     
     .quick-reply {
       display: inline-block;
-      margin: 5px;
-      padding: 8px 12px;
+      margin: 4px;
+      padding: 6px 10px;
       background: rgba(108, 99, 255, 0.1);
-      border-radius: 18px;
+      border-radius: 15px;
       cursor: pointer;
       transition: all 0.3s;
+      font-size: 13px;
     }
     
     .quick-reply:hover {
@@ -359,19 +371,20 @@
     
     /* Import section styles */
     .import-section {
-      padding: 15px;
+      padding: 12px;
       background: rgba(79, 209, 197, 0.1);
-      border-radius: 10px;
-      margin: 10px 0;
+      border-radius: 8px;
+      margin: 8px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     
     .import-controls {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
     }
     
     .file-input {
@@ -379,13 +392,14 @@
     }
     
     .file-label {
-      padding: 8px 15px;
+      padding: 6px 12px;
       background: var(--primary-color);
       color: white;
-      border-radius: 20px;
+      border-radius: 15px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       transition: all 0.3s;
+      white-space: nowrap;
     }
     
     .file-label:hover {
@@ -393,18 +407,125 @@
     }
     
     .reset-button {
-      padding: 8px 15px;
+      padding: 6px 12px;
       background: #e53e3e;
       color: white;
-      border-radius: 20px;
+      border-radius: 15px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       border: none;
       transition: all 0.3s;
+      white-space: nowrap;
     }
     
     .reset-button:hover {
       background: #c53030;
+    }
+    
+    .journal-entry, .task-entry, .finance-entry {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      
+      .container {
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      
+      .header {
+        padding: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .header h2 {
+        font-size: 1.5rem;
+      }
+      
+      .avatar {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .emoji-avatar {
+        font-size: 2.5em;
+      }
+      
+      .chat-container {
+        height: 70vh;
+      }
+      
+      #chatbox { 
+        padding: 20px;
+      }
+      
+      #userInput { 
+        padding: 15px 20px;
+      }
+      
+      #textInput { 
+        padding: 12px 15px;
+        border-radius: 30px;
+      }
+      
+      button { 
+        padding: 12px 25px;
+        border-radius: 30px;
+      }
+      
+      .message { 
+        margin: 15px 0;
+      }
+      
+      .message-content {
+        max-width: 70%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 15px;
+      }
+      
+      .bot-avatar {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .typing-indicator {
+        padding: 10px 15px;
+        border-radius: 18px;
+      }
+      
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+      }
+      
+      .action-buttons {
+        margin-top: 0;
+        align-self: auto;
+      }
+      
+      .quick-reply {
+        padding: 8px 12px;
+        border-radius: 18px;
+        font-size: 14px;
+      }
+      
+      .import-section {
+        padding: 15px;
+        border-radius: 10px;
+        margin: 10px;
+      }
+      
+      .journal-entry, .task-entry, .finance-entry {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -437,13 +558,13 @@
   </div>
   
   <div class="import-section">
-    <h3 style="margin: 0; color: var(--primary-color);">Bot Extensions</h3>
+    <h3 style="margin: 0; color: var(--primary-color); font-size: 14px;">Bot Extensions</h3>
     <div class="import-controls">
       <label for="botExtension" class="file-label">Import Bot Extension</label>
       <input type="file" id="botExtension" class="file-input" accept=".html" onchange="importBotExtension(event)">
       <button class="reset-button" onclick="resetBot()">Reset Bot</button>
     </div>
-    <p style="margin: 0; font-size: 12px; color: var(--text-color); opacity: 0.7;">
+    <p style="margin: 0; font-size: 11px; color: var(--text-color); opacity: 0.7;">
       Import an HTML file to extend Maya's functionality
     </p>
   </div>
